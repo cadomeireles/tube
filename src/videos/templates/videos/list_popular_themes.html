@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}
+	{% trans 'Create a video' %}
+{% endblock title %}
+
+{% block content %}
+	<ol>
+		{% for theme in object_list %}
+			<li>ID: {{ theme.pk }} - Name: {{ theme.name }}</li>
+		{% endfor %}
+	</ol>
+{% endblock content %}

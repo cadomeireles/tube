@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse_lazy as r
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
 from .forms import (
     CreateCommentForm,
@@ -7,7 +7,7 @@ from .forms import (
     CreateThumbForm,
     CreateVideoForm,
 )
-from .models import Video
+from .models import Theme, Video
 
 
 class CreateThemeView(CreateView):
@@ -91,3 +91,17 @@ class CreateCommentView(CreateMetricView):
     form_class = CreateCommentForm
     raw_success_url = 'videos:create_comment'
     template_name = 'videos/create_comment.html'
+
+
+class ListPopularThemesView(ListView):
+    template_name = 'videos/list_popular_themes.html'
+
+    def get_queryset(self):
+        '''
+        Returns a list with themes ordered by popularity
+        '''
+        return sorted(
+            Theme.objects.all(),
+            key=lambda v: v.score,
+            reverse=True,
+        )

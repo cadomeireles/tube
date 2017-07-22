@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -18,6 +20,13 @@ class Theme(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def score(self):
+        '''
+        Returns theme score, that consists of sum of videos' score
+        '''
+        return sum([video.score for video in self.videos.all()])
 
 
 class Video(models.Model):
@@ -50,6 +59,56 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_time_factor(self):
+        '''
+        Returns time factor rate
+        '''
+        days_since_upload = datetime.now().date() - self.date_uploaded
+        return max(0, 1 - (days_since_upload.days / 365))
+
+    def get_good_comments(self):
+        '''
+        Returns good comments rate
+        '''
+        positive_comments = self.comments_set.filter(is_positive=True).count()
+        negative_comments = self.comments_set.filter(is_positive=False).count()
+
+        if not positive_comments:
+            return 0
+
+        return positive_comments / (positive_comments + negative_comments)
+
+    def get_thumbs_up(self):
+        '''
+        Returns thumbs up rate
+        '''
+        thumbs_up = self.thumbs_set.filter(is_positive=True).count()
+        thumbs_down = self.thumbs_set.filter(is_positive=False).count()
+
+        if not thumbs_up:
+            return 0
+
+        return thumbs_up / (thumbs_up + thumbs_down)
+
+    def get_positivity_factor(self):
+        '''
+        Returns positivity factor rate
+        '''
+        good_comments = self.get_good_comments()
+        thumbs_up = self.get_thumbs_up()
+
+        return 0.7 * good_comments + 0.3 * thumbs_up
+
+    @property
+    def score(self):
+        '''
+        Returns video score
+        '''
+        time_factor = self.get_time_factor()
+        positivity_factor = self.get_positivity_factor()
+
+        return self.views * time_factor * positivity_factor
 
 
 class Metric(models.Model):

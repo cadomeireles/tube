@@ -10,6 +10,11 @@ urlpatterns = [
         name='create_theme',
     ),
     url(
+        r'^get_popular_themes/$',
+        views.ListPopularThemesView.as_view(),
+        name='list_popular_themes',
+    ),
+    url(
         r'^video/create/$',
         views.CreateVideoView.as_view(),
         name='create_video',
