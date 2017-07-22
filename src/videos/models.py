@@ -18,3 +18,35 @@ class Theme(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Video(models.Model):
+    '''
+    Representation of a video
+    '''
+    title = models.CharField(
+        _('title'),
+        max_length=160,
+    )
+    url = models.URLField(
+        _('video URL'),
+    )
+    date_uploaded = models.DateField(
+        _('uploaded at'),
+    )
+    views = models.PositiveIntegerField(
+        _('views quantity'),
+    )
+    themes = models.ManyToManyField(
+        Theme,
+        related_name='videos',
+        verbose_name=_('themes'),
+    )
+
+    class Meta:
+        ordering = ['title']
+        verbose_name = _('video')
+        verbose_name_plural = _('videos')
+
+    def __str__(self):
+        return self.title
