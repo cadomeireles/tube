@@ -39,3 +39,12 @@ class CreateVideoForm(forms.ModelForm):
             )
 
         return date
+
+
+class CreateThumbForm(forms.ModelForm):
+    '''
+    Form used to create a thumb
+    '''
+    class Meta:
+        exclude = ('video',)
+        model = Thumb

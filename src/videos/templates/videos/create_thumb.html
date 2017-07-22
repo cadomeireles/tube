@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}
+	{% trans 'Make a thumb' %}
+{% endblock title %}
+
+{% block content %}
+	<h1>{{ video.title }}</h1>
+
+	<section>
+		<h1>{% trans 'Make a thumb' %}</h1>
+		<form action="" method="post">
+			{% csrf_token %}
+
+			{{ form }}
+
+			<button>{% trans 'Save' %}</button>
+		</form>
+	</section>
+{% endblock content %}
