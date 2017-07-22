@@ -1,6 +1,11 @@
-from django import forms
+from datetime import datetime
 
-from .models import Theme, Video
+from dateutil.relativedelta import relativedelta
+from django import forms
+from django.utils.translation import ugettext_lazy as _
+
+
+from .models import Theme, Thumb, Video
 
 
 class CreateThemeForm(forms.ModelForm):
@@ -19,3 +24,18 @@ class CreateVideoForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
         model = Video
+
+    def clean_date_uploaded(self):
+        '''
+        Validate field date_uploaded, the date can't be older than one year
+        '''
+        date = self.cleaned_data['date_uploaded']
+        time = relativedelta(datetime.now(), date)
+
+        # If years and days are equals 1 or more raise the exception
+        if time.years and time.days:
+            raise forms.ValidationError(
+                _('Uploaded at can\'t be older than one year!')
+            )
+
+        return date
