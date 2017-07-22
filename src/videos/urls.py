@@ -9,4 +9,9 @@ urlpatterns = [
         views.CreateThemeView.as_view(),
         name='create_theme',
     ),
+    url(
+        r'^video/create/$',
+        views.CreateVideoView.as_view(),
+        name='create_video',
+    ),
 ]
