@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 
@@ -19,6 +21,6 @@ def video_data():
     return {
         'title': 'Is Your Red The Same as My Red?',
         'url': 'https://www.youtube.com/watch?v=evQsOFQju08',
-        'date_uploaded': '2017-07-01',
+        'date_uploaded': datetime.now().date(),
         'views': '100',
     }
