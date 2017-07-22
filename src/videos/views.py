@@ -23,12 +23,17 @@ class CreateVideoView(CreateView):
     template_name = 'videos/create_video.html'
 
 
-class CreateThumbView(CreateView):
+class CreateMetricView(CreateView):
     '''
-    Makes a thumb on a video
+    Create a view to save a videos.Metric child object
     '''
-    form_class = CreateThumbForm
-    template_name = 'videos/create_thumb.html'
+    raw_success_url = None
+
+    def get_raw_success_url(self):
+        '''
+        Return the raw success url
+        '''
+        return self.raw_success_url
 
     def get_video(self):
         '''
@@ -51,9 +56,9 @@ class CreateThumbView(CreateView):
         '''
         Perform creation
         '''
-        thumb = form.save(commit=False)
-        thumb.video = self.get_video()
-        thumb.save()
+        metric = form.save(commit=False)
+        metric.video = self.get_video()
+        metric.save()
 
         return super().form_valid(form)
 
@@ -62,4 +67,13 @@ class CreateThumbView(CreateView):
         Return to same thump page
         '''
         video = self.get_video()
-        return r('videos:create_thumb', kwargs={'video_pk': video.pk})
+        return r(self.get_raw_success_url(), kwargs={'video_pk': video.pk})
+
+
+class CreateThumbView(CreateMetricView):
+    '''
+    Makes a thumb on a video
+    '''
+    form_class = CreateThumbForm
+    raw_success_url = 'videos:create_thumb'
+    template_name = 'videos/create_thumb.html'
