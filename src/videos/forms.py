@@ -5,7 +5,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 
-from .models import Theme, Thumb, Video
+from .models import Comment, Theme, Thumb, Video
 
 
 class CreateThemeForm(forms.ModelForm):
@@ -48,3 +48,12 @@ class CreateThumbForm(forms.ModelForm):
     class Meta:
         exclude = ('video',)
         model = Thumb
+
+
+class CreateCommentForm(forms.ModelForm):
+    '''
+    Form used to create a comment
+    '''
+    class Meta:
+        exclude = ('video',)
+        model = Comment

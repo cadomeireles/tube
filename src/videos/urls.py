@@ -19,4 +19,9 @@ urlpatterns = [
         views.CreateThumbView.as_view(),
         name='create_thumb',
     ),
+    url(
+        r'^comment/create/(?P<video_pk>\d+)/$',
+        views.CreateCommentView.as_view(),
+        name='create_comment',
+    ),
 ]

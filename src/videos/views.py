@@ -1,7 +1,12 @@
 from django.core.urlresolvers import reverse_lazy as r
 from django.views.generic import CreateView
 
-from .forms import CreateThemeForm, CreateThumbForm, CreateVideoForm
+from .forms import (
+    CreateCommentForm,
+    CreateThemeForm,
+    CreateThumbForm,
+    CreateVideoForm,
+)
 from .models import Video
 
 
@@ -77,3 +82,12 @@ class CreateThumbView(CreateMetricView):
     form_class = CreateThumbForm
     raw_success_url = 'videos:create_thumb'
     template_name = 'videos/create_thumb.html'
+
+
+class CreateCommentView(CreateMetricView):
+    '''
+    Makes a thumb on a video
+    '''
+    form_class = CreateCommentForm
+    raw_success_url = 'videos:create_comment'
+    template_name = 'videos/create_comment.html'
