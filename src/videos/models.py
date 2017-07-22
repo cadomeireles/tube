@@ -61,6 +61,7 @@ class Metric(models.Model):
     )
     time = models.DateTimeField(
         _('time'),
+        auto_now_add=True,
     )
     video = models.ForeignKey(
         Video,
