@@ -90,3 +90,24 @@ class Thumb(Metric):
             return _('Like on %(title)s at %(time)s') % data
         else:
             return _('Dislike on %(title)s at %(time)s') % data
+
+
+class Comment(Metric):
+    '''
+    Representation of a comment
+    '''
+    message = models.TextField(
+        _('message'),
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        ordering = ['-time']
+        verbose_name = _('comment')
+        verbose_name_plural = _('comments')
+
+    def __str__(self):
+        data = {'title': self.video.title, 'time': self.time}
+
+        return _('Comment on %(title)s at %(time)s') % data
