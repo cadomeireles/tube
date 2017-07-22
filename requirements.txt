@@ -12,3 +12,6 @@ Unipath==1.1
 
 # PostgreSQL adapter for the Python
 psycopg2==2.7.1
+
+# Plugin for pytest that provides a set of useful tools for testing Django applications
+pytest-django==3.1.2
