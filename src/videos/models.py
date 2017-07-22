@@ -50,3 +50,43 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Metric(models.Model):
+    '''
+    Base class for video evaluation metrics
+    '''
+    is_positive = models.BooleanField(
+        _('is positive'),
+    )
+    time = models.DateTimeField(
+        _('time'),
+    )
+    video = models.ForeignKey(
+        Video,
+        on_delete=models.CASCADE,
+        related_name='%(class)ss_set',
+        related_query_name='%(class)ss',
+        verbose_name=_('video'),
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Thumb(Metric):
+    '''
+    Representation of a thumb
+    '''
+    class Meta:
+        ordering = ['-time']
+        verbose_name = _('thumb')
+        verbose_name_plural = _('thumbs')
+
+    def __str__(self):
+        data = {'title': self.video.title, 'time': self.time}
+
+        if self.is_positive:
+            return _('Like on %(title)s at %(time)s') % data
+        else:
+            return _('Dislike on %(title)s at %(time)s') % data
